@@ -1,0 +1,22 @@
+---
+title: "class 16"
+author: "Samson A16867000"
+format: html
+---
+
+```{r}
+b <- read.table("myresult.rsv",
+                   col.names = c("qseqid", "sseqid", "pident", "length", "mismatch", "gapopen", "qstart", "qend", "sstart", "send", "evalue", "bitscore")
+)
+```
+
+```{r}
+plot(b$pident  * (b$qend - b$qstart), b$bitscore)
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(b, aes((b$pident * (b$qend - b$qstart)), bitscore)) + geom_point(alpha=0.1) + geom_smooth()
+```
+

@@ -1,0 +1,18 @@
+---
+title: "class18"
+author: "Samson A16867000"
+format: pdf
+---
+
+```{r}
+library(tximport)
+
+# setup the folder and filenames to read
+folders <- dir(pattern="SRR21568*")
+samples <- sub("_quant", "", folders)
+files <- file.path( folders, "abundance.tsv" )
+names(files) <- samples
+```
+
+
+  

@@ -1,0 +1,248 @@
+---
+title: "Class 9: Structural Bioinformatics 1"
+author: "Samson A16867000"
+format: pdf
+---
+
+The main database for structual data is called the PDB (Protein Data Bank). Let's see what it contains:
+
+Data from: https://www.rcsb.org/stats
+
+```{r}
+pdbdb <- read.csv("pdb_stats.csv")
+pdbdb
+```
+
+```{r}
+pdbdb$Total
+```
+
+I need to remove the comma and convert to numeric to do math:
+```{r}
+as.numeric(sub(",","",pdbdb$Total))
+#as.numeric(pdbdb$Total)
+```
+I could turn this inot a function to fix the whole table or any future table I read like this: 
+
+```{r}
+x <- pdbdb$Total
+as.numeric(sub(",","",x))
+```
+```{r}
+comma2numeric <- function(x){
+  as.numeric(sub(",","",x))
+}
+```
+
+```{r}
+comma2numeric(pdbdb$X.ray)
+```
+```{r}
+apply(pdbdb, 2, comma2numeric)
+```
+
+## Or try a different read/import function: 
+
+```{r}
+library(readr)
+pdbdb <- read_csv("pdb_stats.csv")
+```
+```{r}
+sum(pdbdb$Total)
+```
+
+>. Q1: What percentage of structures in the PDB are solved by X-Ray and Electron Microscopy.
+
+```{r}
+sum(pdbdb$`X-ray`)/sum(pdbdb$Total)*100
+```
+x-Ray = 83.30359%
+
+```{r}
+sum(pdbdb$`EM`)/sum(pdbdb$Total)*100
+```
+EM = 10.18091%
+
+>. Q2: What proportion of structures in the PDB are protein?
+
+```{r}
+pdbdb$Total[1]/sum(pdbdb$Total)*100
+```
+
+>. Q3: Type HIV in the PDB website search box on the home page and determine how many HIV-1 protease structures are in the current PDB?
+
+Currently, there are 5 HIV-1 protease structures in the PDB.
+
+## Mol*
+
+Mol* (pronounced "molstar") is a new web-based molecular viewer that we will need to learn the basics of here. 
+
+https://molstar.org/viewer/
+
+We will use PDB code: 1HSG
+
+![A first image from molstar](1HSG.png)
+
+![The catalytic AP25 amino acid](1HSG (1).png)
+
+![Surface display showing merk compound in the peptide binidng pocket](1HSG (4).png)
+
+>. Q4: Water molecules normally have 3 atoms. Why do we see just one atom per water molecule in this structure?
+
+We see just one atom per water molecule because it allows us to focus on the main structural features of the molecule
+
+>. Q5: There is a critical “conserved” water molecule in the binding site. Can you identify this water molecule? What residue number does this water molecule have
+
+This water molecule has a residue number 308. 
+
+>. Q6: Generate and save a figure clearly showing the two distinct chains of HIV-protease along with the ligand. You might also consider showing the catalytic residues ASP 25 in each chain and the critical water (we recommend “Ball & Stick” for these side-chains). Add this figure to your Quarto document.
+
+![Close up view of binding site with drug and HOH 308](1HSG (3).png)
+
+## The Bio3D
+
+The bio3d package allows us to do all sorts of structural bioinformations work in R.
+
+Let's start with ohw it can read these PDB files 
+
+```{r}
+library(bio3d)
+
+pdb <- read.pdb("1hsg")
+pdb
+```
+
+```{r}
+attributes(pdb)
+```
+
+```{r}
+head(pdb$atom)
+```
+
+```{r}
+pdbseq(pdb)
+```
+>. Q7: How many amino acid residues are there in this pdb object? 
+
+```{r}
+length(pdbseq(pdb))
+```
+>. Q8: Name one of the two non-protein residues? 
+
+HOH and MK1
+
+>. Q9: How many protein chains are in this structure? 
+
+2
+
+```{r}
+unique(pdb$atom$chain)
+```
+
+## Prediciting functional motions of a single strucutre 
+
+Let's do a bioinformatics prediction of function motions - i.e the movements that one of these molecules needs to make to do its stuff 
+
+```{r}
+adk <- read.pdb("6s36")
+adk
+```
+
+```{r}
+# Perform flexibility prediction
+m <- nma(adk)
+
+plot(m)
+```
+
+Write out multi-model PDB file that we can use to make an animation of the predicted motions.
+
+```{r}
+mktrj(m, file="adk.pdb")
+```
+
+
+## Comparative Analysis of protein strucutres 
+
+```{r}
+library(bio3d)
+```
+
+Here we will find and analyze all ADK structures in the PDB database. 
+
+We will start with a single database accession id: "1ake_A"
+
+```{r}
+id <- "1ake_A"
+aa <- get.seq(id)
+aa
+```
+
+>. Q10. Which of the packages above is found only on BioConductor and not CRAN?
+
+msa package
+
+>. Q11. Which of the above packages is not found on BioConductor or CRAN?: 
+
+bio3d
+
+>. Q12. True or False? Functions from the devtools package can be used to install packages from GitHub and BitBucket? 
+
+True
+
+>. Q13. How many amino acids are in this sequence, i.e. how long is this sequence? 
+
+```{r}
+ncol(aa$al)
+```
+
+
+```{r}
+attributes(aa)
+```
+
+```{r}
+b <- blast.pdb(aa)
+```
+```{r}
+plot(b)
+```
+
+
+```{r}
+hits <- NULL
+hits$pdb.id <- c('1AKE_A','6S36_A','6RZE_A','3HPR_A','1E4V_A','5EJE_A','1E4Y_A','3X2S_A','6HAP_A','6HAM_A','4K46_A','3GMT_A','4PZL_A')
+```
+
+```{r}
+# Download releated PDB files
+files <- get.pdb(hits$pdb.id, path="pdbs", split=TRUE, gzip=TRUE)
+```
+
+Next we will use the pdbaln() function to align and also optionally fit (i.e. superpose) the identified PDB structures.
+
+```{r}
+# Align releated PDBs
+pdbs <- pdbaln(files, fit = TRUE, exefile="msa")
+```
+```{r}
+pdb
+```
+
+## Principle Component Analysis 
+
+```{r}
+# Perform PCA
+pc.xray <- pca(pdbs)
+plot(pc.xray)
+```
+
+To visualize the major structural variations in the ensemble the function mktrj() can be used to generate a trajectory PDB file by interpolating along a give PC (eigenvector):
+
+```{r}
+pc1 <- mktrj(pc.xray, pc=1, file="pc_1.pdb")
+```
+
+
+
