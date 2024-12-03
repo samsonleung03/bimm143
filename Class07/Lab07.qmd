@@ -1,0 +1,209 @@
+---
+title: "Class 7: Machine Learning I"
+author: "Samson A16867000"
+format: pdf
+---
+```{r}
+
+```
+
+Today we are going to learn how to apply different machine learning methods, beiginning with clustering 
+
+The goal here is to find groups/clusters in your input data 
+
+```{r}
+rnorm(10)
+```
+```{r}
+hist(rnorm(1000, mean =3))
+```
+```{r}
+n <- 30
+x <- c(rnorm(n,-3), rnorm(n, +3 )) 
+y <- rev(x)
+
+z <-cbind(x,y)
+head(z)
+
+plot(z)
+```
+Use the kmeans() function setting k to 2 and nstart=20
+Inspect/print the results
+
+>. Q. How many points are in each cluster?
+>. Q. What ‘component’ of your result object details
+ - cluster size?
+ - cluster assignment/membership?
+ - cluster center?
+>. Q. Plot x colored by the kmeans cluster assignment and
+ add cluster centers as blue points
+ 
+```{r}
+km <- kmeans(z, centers = 2)
+```
+ 
+```{r}
+attributes(km)
+```
+
+cluster size 
+```{r}
+km$size
+```
+
+cluster membership?
+```{r}
+km$cluster
+```
+
+cluster center?
+```{r}
+km$centers
+```
+
+```{r}
+plot(z, col = "red")
+```
+
+R will recycle the shorter color vector to be the same length as the longer (number of data points) in z
+
+```{r}
+plot(z, col = c("red", "blue"))
+```
+```{r}
+plot(z, col = c())
+```
+```{r}
+plot(z, col = km$cluster)
+```
+
+We can use the `points()` function to add new points to an existing plot... like th ecluter centers
+
+```{r}
+rnorm(10)
+```
+```{r}
+hist(rnorm(1000, mean =3))
+```
+```{r}
+n <- 30
+x <- c(rnorm(n,-3), rnorm(n, +3 )) 
+y <- rev(x)
+
+z <-cbind(x,y)
+head(z)
+
+plot(z)
+```
+ 
+```{r}
+km <- kmeans(z, centers = 2)
+```
+ 
+```{r}
+attributes(km)
+```
+
+
+```{r}
+plot(z, col = "red")
+```
+
+R will recycle the shorter color vector to be the same length as the longer (number of data points) in z
+
+```{r}
+plot(z, col = c("red", "blue"))
+points(km$centers, col = "blue", pch = 15, cex=3)
+```
+
+
+We can use the `points()` function to add new points to an existing plot... like th ecluter centers
+
+>. Q. Can you run kmeans and ask for 4 clusters please and plot the results like we have done above? 
+
+```{r}
+km4 <- kmeans(z, centers = 4)
+plot(z, col = km4$cluster)
+points(km4$centers, col = "blue", pch = 15, cex=1.5)
+```
+
+## Hierarchical Ckustering 
+
+
+Let's take our same made-up data `z` and see how hclust works. 
+
+First we need a distance matrix of our data to be clustered.
+
+```{r}
+d <- dist(z)
+hc <- hclust(d)
+hc
+```
+```{r}
+plot(hc)
+abline(h=8, col = "red")
+```
+
+I can get my cluster memebership cluster vector by "clutting the tree" with the `cutree()` function like so:
+
+```{r}
+grps <- cutree(hc, h=8)
+grps
+```
+Can you plt `z` again colored by out hcluster results:
+
+```{r}
+plot(z, col= grps)
+```
+
+## PCA of UK food data
+
+Read data from the UK on food consumption in different parts of the UK
+
+```{r}
+url <- "https://tinyurl.com/UK-foods"
+x <- read.csv(url, row.names = 1)
+head(x)
+```
+
+```{r}
+barplot(as.matrix(x), beside=T, col=rainbow(nrow(x)))
+```
+
+so-called "Pairs" plot can be useful for small datasets like 
+
+```{r}
+pairs(x, col=rainbow(10), pch=16)
+```
+
+It's hard to see structure and trends in even this small dataset how will we wever do this when we have big datasets with 1,000s or 10s of thousands of things we are measuring...
+
+## PCA to the rescue 
+
+Let's see how PCA deals with this dataset. So the main function in base R to do PCA is called `prcomp()`
+
+```{r}
+pca <- prcomp(t(x))
+summary(pca)
+```
+Let's see what is inside this PCA object that we created from running `prcomp()` 
+
+```{r}
+attributes(pca)
+```
+```{r}
+pca$x
+```
+```{r}
+plot(pca$x[,1],pca$x[,2], 
+     col =c("black","red", "blue", "darkgreen"),pch=16,)
+```
+
+## Lets focus on PC1 as it accounts for > 90% of variance
+
+```{r}
+par(mar=c(10, 3, 0.35, 0))
+barplot( pca$rotation[,1], las=2 )
+```
+
+
