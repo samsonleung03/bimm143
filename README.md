@@ -1,2 +1,3 @@
-# BIMM1433
-Classwork for BIMM143 F24 at UCSD
+# BIMM143 
+Classwork for BIMM143 F24 at UC San Diego. 
+
