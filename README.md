@@ -14,6 +14,8 @@ Classwork for [BIMM143](https://bioboot.github.io/bimm143_F24/) F24 at UC San Di
 
 - Class 10 [Halloween Mini Project](https://github.com/samsonleung03/bimm143/blob/main/Class%2010/class10.pdf)
 
+- Class 12 [Population Analysis](https://github.com/samsonleung03/bimm143/blob/main/HW%20Class%2012/HW-Class-12.pdf)
+
 - Class 13 [RNASeq with DESeq2](https://github.com/samsonleung03/bimm143/blob/main/Class13/class13.pdf)
 
 - Class 14 [DESeq2 Analysis](https://github.com/samsonleung03/bimm143/blob/main/Class%2014/Class-14.pdf)
