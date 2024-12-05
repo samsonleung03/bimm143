@@ -1,7 +1,7 @@
 ---
 title: "Class 5: Data vis with ggplot"
 author: "Samson A16867000"
-format: pdf
+format: gfm
 ---
 
 ## Plotting in R
