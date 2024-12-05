@@ -1,0 +1,50 @@
+---
+title: "HW Class 12"
+author: "Samson A16867000"
+format: pdf
+---
+
+## Section 4: Population Scale Analysis
+
+>. Q13: Read this file into R and determine the sample size for each genotype and their
+corresponding median expression levels for each of these genotypes.
+
+
+```{r}
+expr <- read.table("rs8067378_ENSG00000172057.6.txt")
+head(expr)
+```
+
+```{r}
+nrow(expr)
+```
+
+```{r}
+table(expr$geno)
+```
+
+```{r}
+geno.exp <- boxplot(exp ~ geno, data = expr)
+```
+```{r}
+medians <- aggregate(exp ~ geno, data = expr, FUN = median)
+medians
+```
+
+median expression levels for each of the genotypes
+
+
+```{r}
+library(ggplot2)
+```
+
+>. Q14: Generate a boxplot with a box per genotype, what could you infer from the relative
+expression value between A/A and G/G displayed in this plot? Does the SNP effect the
+expression of ORMDL3?
+
+```{r}
+ggplot(expr) + aes(geno, exp, fill = geno)+
+  geom_boxplot(notch=TRUE)
+```
+Based on the boxplot it seems that having G/G is associated with having less expression compared to A/A. Yes the SNP effects the expression of ORMDL3
+
