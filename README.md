@@ -1,8 +1,8 @@
 # BIMM143 
 Classwork for [BIMM143](https://bioboot.github.io/bimm143_F24/) F24 at UC San Diego. 
 
-- Class 5 [Data viz with ggplot](https://github.com/samsonleung03/bimm143/blob/main/class05/class05.pdf)
-<<<<<<< HEAD
+
+- Class 5 [Data viz with ggplot](https://github.com/samsonleung03/bimm143/blob/main/class05/class05.md)
 
 - Class 6 [R functions](https://github.com/samsonleung03/bimm143/blob/main/class06/class06.1.pdf)
 
@@ -21,6 +21,7 @@ Classwork for [BIMM143](https://bioboot.github.io/bimm143_F24/) F24 at UC San Di
 - Class 15 [Pertussis Resurgence ](https://github.com/samsonleung03/bimm143/blob/main/Class%2015/class-15.pdf)
 
 - Class 16 [Lauching AWS instances](https://github.com/samsonleung03/bimm143/blob/main/class16/class-16.pdf)
+<<<<<<< HEAD
 =======
   
 - Class 6 [R functions](https://github.com/samsonleung03/bimm143/blob/main/class06/class06.1.pdf)
@@ -41,3 +42,5 @@ Classwork for [BIMM143](https://bioboot.github.io/bimm143_F24/) F24 at UC San Di
   
 - Class 16 [Lauching AWS instances](https://github.com/samsonleung03/bimm143/blob/main/class16/class-16.pdf)
 >>>>>>> b6113f3d2ca4447cda8a73543ff63bb2aba71cb4
+=======
+>>>>>>> 0cc98726bd8c61c7840072f66fdac5ac2f80f1da
