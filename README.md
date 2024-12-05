@@ -8,7 +8,7 @@ Classwork for [BIMM143](https://bioboot.github.io/bimm143_F24/) F24 at UC San Di
 
 - Class 7 [Machine Learning 1](https://github.com/samsonleung03/bimm143/blob/main/Class07/Lab07.md)
 
-- Class 8 [PCA](https://github.com/samsonleung03/bimm143/blob/main/class08/class08.pdf)
+- Class 8 [PCA](https://github.com/samsonleung03/bimm143/blob/main/class08/class08.md)
 
 - Class 9 [Structural Bioinformatics 1](https://github.com/samsonleung03/bimm143/blob/main/Class09/Class09.pdf)
 
